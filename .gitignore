@@ -179,3 +179,25 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Ultralytics / YOLO generated files
+runs/
+*.pt
+*.onnx
+*.engine
+*.torchscript
+*.tflite
+*.xml
+*.bin
+
+# Datasets
+datasets/
+dataset/
+data/
+*.zip
+
+# Python environments and secrets
+.env
+.env.*
+*.key
+*.pem
