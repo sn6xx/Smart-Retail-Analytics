@@ -201,3 +201,9 @@ data/
 .env.*
 *.key
 *.pem
+
+# Generated computer vision outputs
+*.jpg
+*.jpeg
+*.png
+*.mp4
