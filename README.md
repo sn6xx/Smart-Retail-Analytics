@@ -661,7 +661,7 @@ Custom training and deployment/export are planned extensions.
 
 **Program Format:** 5-day capstone, on-site | 30 training hours
 
-**Cohort / Session Dates:** [Add your cohort/session dates]
+**Cohort / Session Dates:** August 9–13, 2026
 
 This project was developed as part of the Computer Vision for Developers with Ultralytics training program delivered by SDAIA Academy via Learning Space.
 
