@@ -2,11 +2,11 @@
 
 **Trainee:** Saja Aljamal
 
-## Capstone Project – Computer Vision for Developers with Ultralytics
+## Capstone Project — Computer Vision for Developers with Ultralytics
 
-A real-world computer vision application built with Ultralytics YOLO for smart retail analytics.
+Smart Retail Analytics is an end-to-end computer vision application developed using **Ultralytics YOLO** and **OpenCV**.
 
-The project demonstrates an end-to-end computer vision pipeline for detecting people, applying video analytics, generating privacy-preserving outputs, and evaluating YOLO model performance.
+The project focuses on detecting people in retail-like video environments, applying real-world video analytics, generating privacy-preserving outputs, evaluating model performance, training a custom YOLO model on a task-specific dataset, and exporting the trained model to ONNX for deployment.
 
 ---
 
@@ -16,7 +16,7 @@ The project demonstrates an end-to-end computer vision pipeline for detecting pe
 
 Retail environments generate large amounts of visual data that can be used to understand customer presence and movement.
 
-Manual analysis of video footage can be time-consuming and difficult to scale. Computer vision can automate the detection and analysis of people in video streams.
+Manually reviewing video footage is time-consuming and difficult to scale. Computer vision can automate people detection and provide useful analytics from video streams.
 
 ### Solution
 
@@ -30,10 +30,14 @@ The implemented pipeline includes:
 4. People counting.
 5. Heatmap generation.
 6. Privacy-preserving object blurring.
-7. Video analytics.
-8. Model validation and performance evaluation.
+7. Additional video analytics.
+8. Pretrained model evaluation.
+9. Custom dataset training.
+10. Custom model inference on unseen images.
+11. Custom model inference on an unseen video.
+12. ONNX model export.
 
-The project is designed as an end-to-end computer vision application rather than a standalone object detection demonstration.
+The project demonstrates an end-to-end computer vision workflow rather than a simple object-detection demonstration.
 
 ---
 
@@ -41,37 +45,41 @@ The project is designed as an end-to-end computer vision application rather than
 
 The main objectives of this capstone project are:
 
-- Perform object detection using Ultralytics YOLO.
-- Perform a computer vision task beyond plain detection using instance segmentation.
-- Apply YOLO to a real-world video scenario.
-- Analyze people movement in video.
-- Count detected people.
-- Generate movement heatmaps.
-- Apply privacy-preserving object blurring.
-- Perform additional video analytics.
-- Evaluate the pretrained YOLO model using quantitative validation metrics.
-- Document real execution results and generated outputs.
-- Extend the project with custom model training and deployment/export.
+* Perform object detection using Ultralytics YOLO.
+* Perform a computer vision task beyond plain detection using instance segmentation.
+* Apply YOLO to a real-world video scenario.
+* Analyze people movement in video.
+* Count detected people.
+* Generate movement heatmaps.
+* Apply privacy-preserving object blurring.
+* Perform additional video analytics.
+* Evaluate model performance using quantitative metrics.
+* Train a custom YOLO model using a task-specific dataset.
+* Run the custom model on unseen images.
+* Run the custom model on an unseen video.
+* Export the trained model to ONNX.
+* Capture and document real execution results.
 
 ---
 
 ## 3. Technologies
 
-- Python
-- Ultralytics YOLO
-- OpenCV
-- NumPy
-- Pandas
-- PyTorch
-- Google Colab
-- GitHub
-- GitHub Desktop
+* Python
+* Ultralytics YOLO
+* OpenCV
+* NumPy
+* Pandas
+* PyTorch
+* Roboflow Universe
+* Google Colab
+* Google Drive
+* GitHub
 
 ---
 
 ## 4. Computer Vision Models
 
-### 4.1 Object Detection Model
+### 4.1 Pretrained Detection Model
 
 The project uses the pretrained YOLO model:
 
@@ -83,110 +91,59 @@ The model is used for object detection on images and video frames.
 
 The detection model generates:
 
-- Bounding boxes
-- Class labels
-- Confidence scores
+* Bounding boxes
+* Class labels
+* Confidence scores
 
 ### 4.2 Instance Segmentation Model
 
-The project uses the task-specific segmentation model:
+The project also uses the task-specific segmentation model:
 
 ```text
 yolo26n-seg.pt
 ```
 
-Instance segmentation extends basic object detection by generating object masks in addition to bounding boxes and class predictions.
+Instance segmentation extends object detection by generating object masks in addition to bounding boxes and class predictions.
+
+This demonstrates a computer vision task beyond basic object detection.
 
 ---
 
-## 5. Core Vision Tasks & Inference
+# 5. Core Vision Tasks & Inference
 
-### 5.1 Load YOLO Model
+## 5.1 YOLO Object Detection
 
-A pretrained Ultralytics YOLO model is loaded using the Python API.
+A frame was extracted from the input video using OpenCV and processed using the pretrained YOLO model.
 
-```python
-from ultralytics import YOLO
-
-# Load a pretrained YOLO model
-model = YOLO("yolo26n.pt")
-
-print("Model loaded successfully!")
-```
-
-The model was successfully loaded and prepared for inference.
-
-### 5.2 YOLO Object Detection
-
-A test frame is extracted from the input video using OpenCV.
-
-```python
-import cv2
-
-video_path = "solutions_ci_demo.mp4"
-image_path = "detection_test_frame.jpg"
-
-cap = cv2.VideoCapture(video_path)
-
-success, frame = cap.read()
-
-if not success:
-    raise RuntimeError("Could not read the input video.")
-
-cv2.imwrite(image_path, frame)
-
-cap.release()
-
-print("Test frame saved as:", image_path)
-```
-
-The executed cell produced:
+Input video:
 
 ```text
-Test frame saved as: detection_test_frame.jpg
+solutions_ci_demo.mp4
 ```
 
-### 5.3 Run YOLO Inference
-
-The extracted frame is passed to the pretrained YOLO model.
-
-```python
-# Run YOLO inference
-results = model(image_path)
-
-# Generate annotated image
-annotated_image = results[0].plot()
-
-# Save the detection result
-detection_output = "detection_result.jpg"
-
-cv2.imwrite(detection_output, annotated_image)
-
-print("Detection completed successfully!")
-print("Output saved as:", detection_output)
-```
-
-Example execution output:
+The extracted frame was saved as:
 
 ```text
-1 image ... 19 persons ...
-Detection completed successfully!
-Output saved as: detection_result.jpg
+detection_test_frame.jpg
 ```
 
-The model successfully detected people in the test frame and generated an annotated image containing bounding boxes, class labels, and confidence information.
+The detection result was saved as:
 
-### 5.4 Instance Segmentation
+```text
+detection_result.jpg
+```
 
-Instance segmentation is included as the computer vision task beyond plain object detection.
+The executed inference successfully detected people in the test frame and generated an annotated image containing bounding boxes, class labels, and confidence information.
 
-The task-specific YOLO segmentation weights are:
+## 5.2 Instance Segmentation
+
+Instance segmentation was performed using the task-specific model:
 
 ```text
 yolo26n-seg.pt
 ```
 
-The segmentation model generates object masks in addition to detection information.
+The segmentation model generates object masks in addition to bounding boxes and class predictions.
 
 Example output:
 
@@ -194,15 +151,15 @@ Example output:
 segmentation_result.jpg
 ```
 
-The segmentation stage demonstrates the use of task-specific YOLO weights for a vision task beyond basic object detection.
+This satisfies the requirement for a computer vision task beyond plain object detection.
 
 ---
 
-## 6. Real-World Solution & Video Analytics
+# 6. Real-World Solution & Video Analytics
 
 The project applies Ultralytics Solutions to a real video-processing pipeline.
 
-The video-processing workflow is:
+The general workflow is:
 
 ```text
 Input Video
@@ -226,153 +183,76 @@ OpenCV Video Writer
 Output Video
 ```
 
-This satisfies the real-world video analytics requirement by processing video frames through an OpenCV capture/process/write pipeline.
+The video-processing pipeline performs real frame-by-frame processing using OpenCV.
 
-### 6.1 People Counting
+## 6.1 People Counting
 
-Ultralytics video analytics functionality is used to detect and count people in the video stream.
+People-counting functionality was applied to the video stream to detect and count people.
 
-The video is processed frame by frame using OpenCV, and the processed frames are written to an output video.
-
-Example output:
+Output:
 
 ```text
 people_counting_result.mp4
 ```
 
-### 6.2 Heatmap Generation
+The video was processed frame by frame and the resulting annotated frames were written to an output video.
 
-Ultralytics Heatmap functionality is used to visualize movement within the video.
+## 6.2 Heatmap Generation
+
+Ultralytics Heatmap functionality was used to visualize movement within the video.
 
 The heatmap provides a visual representation of areas where detected people move through the scene.
 
-Example output:
+Output:
 
 ```text
 heatmap_result.mp4
 ```
 
-### 6.3 Object Blurring
+## 6.3 Privacy-Preserving Object Blurring
 
-The Ultralytics `ObjectBlurrer` solution is used to blur detected people for privacy protection.
+The Ultralytics `ObjectBlurrer` solution was used to blur detected people for privacy protection.
 
-```python
-from ultralytics import solutions
-import cv2
-
-video_path = "solutions_ci_demo.mp4"
-output_path = "blurred_result.mp4"
-
-cap = cv2.VideoCapture(video_path)
-
-fps = cap.get(cv2.CAP_PROP_FPS)
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-if fps <= 0:
-    fps = 30
-
-fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-
-out = cv2.VideoWriter(
-    output_path,
-    fourcc,
-    fps,
-    (width, height)
-)
-
-blurrer = solutions.ObjectBlurrer(
-    model="yolo26n.pt",
-    classes=[0],
-    blur_ratio=0.5,
-    show=False
-)
-
-frame_count = 0
-
-while cap.isOpened():
-
-    success, frame = cap.read()
-
-    if not success:
-        break
-
-    result = blurrer(frame)
-
-    out.write(result.plot_im)
-
-    frame_count += 1
-
-cap.release()
-out.release()
-
-print("Object blurring completed!")
-print("Frames processed:", frame_count)
-print("Output saved as:", output_path)
-```
-
-Example output:
+Output:
 
 ```text
-Object blurring completed!
-Frames processed: ...
-Output saved as: blurred_result.mp4
+blurred_result.mp4
 ```
 
 The resulting video provides a privacy-preserving version of the processed footage.
 
-### 6.4 Additional Video Analytics
+## 6.4 Additional Video Analytics
 
-Ultralytics `Analytics` is used to perform additional analytics on the video stream.
+Additional Ultralytics analytics functionality was applied to the video stream.
 
-The video is processed frame by frame using OpenCV and the processed frames are written to an output video.
-
-Example output:
+Output:
 
 ```text
 analytics_result.mp4
 ```
 
+These tasks demonstrate the use of YOLO within a real OpenCV capture, processing, and output pipeline.
+
 ---
 
-## 7. Model Evaluation
+# 7. Model Evaluation
 
-The pretrained YOLO model was evaluated using the Ultralytics validation pipeline.
+## 7.1 Pretrained Model Evaluation
 
-The validation was performed using the COCO8 dataset as a baseline evaluation dataset.
+The pretrained YOLO model was evaluated using the Ultralytics validation pipeline with the COCO8 dataset as a baseline evaluation dataset.
 
-### 7.1 Validation Code
+The validation produced the following metrics:
 
-```python
-from ultralytics import YOLO
+| Metric    | Result |
+| --------- | -----: |
+| Precision |  0.849 |
+| Recall    |  0.654 |
+| mAP50     |  0.906 |
+| mAP50-95  |  0.665 |
 
-model = YOLO("yolo26n.pt")
+### Precision
 
-validation_results = model.val(
-    data="coco8.yaml",
-    imgsz=640,
-    batch=8
-)
-
-print("Validation completed successfully!")
-```
-
-The validation run completed successfully and produced concrete evaluation metrics.
-
-### 7.2 Validation Results
-
-| Metric | Result |
-|---|---:|
-| Precision | 0.849 |
-| Recall | 0.654 |
-| mAP50 | 0.906 |
-| mAP50-95 | 0.665 |
-
-### 7.3 Evaluation Metrics
-
-#### Precision
-
-Precision measures how many of the model's predicted detections are correct.
+Precision measures the proportion of predicted detections that are correct.
 
 The model achieved:
 
@@ -380,11 +260,11 @@ The model achieved:
 0.849
 ```
 
-This indicates that a high proportion of the predicted detections were correct.
+This indicates that a high proportion of the model's predicted detections were correct.
 
-#### Recall
+### Recall
 
-Recall measures how many relevant objects were successfully detected.
+Recall measures the proportion of relevant objects that were successfully detected.
 
 The model achieved:
 
@@ -394,9 +274,7 @@ The model achieved:
 
 The lower recall compared with precision indicates that some relevant objects were missed.
 
-#### mAP50
-
-mAP50 measures mean Average Precision using an IoU threshold of 0.50.
+### mAP50
 
 The model achieved:
 
@@ -404,11 +282,9 @@ The model achieved:
 0.906
 ```
 
-This indicates strong detection performance under the 0.50 IoU evaluation condition.
+mAP50 measures mean Average Precision using an IoU threshold of 0.50.
 
-#### mAP50-95
-
-mAP50-95 measures mean Average Precision across IoU thresholds from 0.50 to 0.95.
+### mAP50-95
 
 The model achieved:
 
@@ -416,43 +292,188 @@ The model achieved:
 0.665
 ```
 
-This provides a stricter measure of object localization quality across multiple IoU thresholds.
+mAP50-95 provides a stricter evaluation across IoU thresholds from 0.50 to 0.95.
 
-### 7.4 Evaluation Interpretation
+## 7.2 Evaluation Interpretation
 
-The validation results provide a quantitative baseline for the pretrained YOLO model.
+The validation results provide a quantitative baseline for the pretrained model.
 
-The relatively high precision indicates that the model produced a high proportion of correct detections.
+The relatively high precision indicates that the model produced a high proportion of correct detections, while the lower recall indicates that some relevant objects were missed.
 
-The lower recall indicates that some objects were not detected, resulting in false negatives.
+Potential causes of missed detections or incorrect predictions can include:
 
-Possible causes include:
+* Small objects.
+* Partial occlusion.
+* Crowded scenes.
+* Difficult lighting conditions.
+* Objects blending with the background.
 
-- Small objects.
-- Partial occlusion.
-- Crowded scenes.
-- Difficult lighting conditions.
-- Objects blending with the background.
+The evaluation was used as a baseline before custom training on the task-specific dataset.
 
-False positives may occur when background regions or visually similar objects are incorrectly classified as target objects.
-
-### 7.5 IoU and Confidence Thresholds
+## 7.3 IoU and Confidence Thresholds
 
 IoU (Intersection over Union) measures the overlap between predicted and ground-truth bounding boxes.
 
-The mAP50 metric evaluates detections at an IoU threshold of 0.50, while mAP50-95 evaluates the model across multiple IoU thresholds.
+The project uses confidence thresholds during inference to control which detections are accepted.
 
-Confidence thresholds determine how confident the model must be before a detection is accepted.
+For the custom model inference stages, a confidence threshold of:
 
-The validation results are used as a baseline before custom training on a task-specific dataset.
+```text
+0.5
+```
+
+was used.
 
 ---
 
-## 8. Project Outputs
+# 8. Custom Data & Training
 
-The project generates visual and video outputs during execution.
+## 8.1 Dataset Source
 
-### Image Outputs
+The custom training dataset was obtained from **Roboflow Universe**.
+
+**Dataset:** People Detection - Thermal
+
+**Task:** Object Detection
+
+**Class:** person
+
+**Source:** Roboflow Universe
+
+**License:** CC BY 4.0
+
+The dataset is publicly available through Roboflow Universe and provides YOLO-compatible dataset exports.
+
+Dataset source:
+
+[People Detection - Thermal — Roboflow Universe](https://universe.roboflow.com/roboflow-universe-projects/people-detection-thermal?utm_source=chatgpt.com)
+
+The dataset was downloaded and prepared in YOLO format for use with Ultralytics YOLO26n.
+
+The prepared dataset was stored locally at:
+
+```text
+/content/custom_dataset
+```
+
+## 8.2 Custom Training
+
+The YOLO26n model was fine-tuned using the custom people-detection dataset.
+
+The training process generated trained model weights.
+
+The best trained model was saved at:
+
+```text
+/content/runs/detect/train/weights/best.pt
+```
+
+The custom training stage demonstrates fine-tuning on a task-specific dataset rather than re-running the COCO8 warm-up demonstration.
+
+---
+
+# 9. Custom Model Inference
+
+## 9.1 Custom Model Image Inference
+
+The trained YOLO26n model was loaded from:
+
+```text
+/content/runs/detect/train/weights/best.pt
+```
+
+The model was used to perform inference on unseen images from the custom dataset.
+
+The prediction results were saved by Ultralytics under:
+
+```text
+/content/runs/detect/predict/
+```
+
+The results were visually inspected by displaying individual prediction images and multiple randomly selected prediction images.
+
+The prediction results showed successful people detection with bounding boxes.
+
+## 9.2 Custom Model Video Inference
+
+The trained custom model was also evaluated on an unseen video:
+
+```text
+test_video.mp4
+```
+
+The model was loaded using:
+
+```python
+from ultralytics import YOLO
+
+model = YOLO("/content/runs/detect/train/weights/best.pt")
+
+results = model.predict(
+    source="/content/test_video.mp4",
+    save=True,
+    conf=0.5
+)
+
+print("Video inference completed successfully.")
+```
+
+The inference completed successfully and generated an annotated video.
+
+Ultralytics initially generated the output in AVI format:
+
+```text
+test_video.avi
+```
+
+The generated video was subsequently converted to MP4 using FFmpeg for easier playback and visualization.
+
+This demonstrates that the custom-trained model was applied to an unseen video rather than only to training images.
+
+---
+
+# 10. Deployment & Export
+
+## 10.1 ONNX Export
+
+The trained custom model was exported to ONNX format using the Ultralytics Python API.
+
+```python
+from ultralytics import YOLO
+
+model = YOLO("/content/runs/detect/train/weights/best.pt")
+
+export_path = model.export(format="onnx")
+
+print("Model export completed successfully!")
+print("Exported model:", export_path)
+```
+
+The export completed successfully.
+
+Output:
+
+```text
+/content/runs/detect/train/weights/best.onnx
+```
+
+The exported model was verified after the export.
+
+Verification result:
+
+```text
+ONNX model exists: True
+ONNX model path: /content/runs/detect/train/weights/best.onnx
+ONNX model size: 9.35 MB
+```
+
+The ONNX model provides a portable format suitable for deployment and inference outside the original PyTorch training environment.
+
+---
+
+# 11. Project Outputs
+
+## Image Outputs
 
 ```text
 detection_test_frame.jpg
@@ -460,78 +481,40 @@ detection_result.jpg
 segmentation_result.jpg
 ```
 
-### Video Outputs
+Custom model prediction images are generated under:
+
+```text
+runs/detect/predict/
+```
+
+## Video Outputs
 
 ```text
 people_counting_result.mp4
 heatmap_result.mp4
 blurred_result.mp4
 analytics_result.mp4
+test_video.mp4
 ```
 
-These outputs provide visual evidence of the executed computer vision pipeline.
+The custom model video inference output was generated under the corresponding Ultralytics prediction directory.
 
----
-
-## 9. Notebook
-
-The complete implementation is available in:
+## Model Outputs
 
 ```text
-Smart_Retail_Analytics_Capstone.ipynb
+best.pt
+best.onnx
 ```
 
-The notebook contains:
+The trained model files are stored under:
 
-- Project setup
-- YOLO model loading
-- Object detection
-- Instance segmentation
-- Video analytics
-- Generated outputs
-- Model validation
-- Evaluation metrics
-- Captured execution results
-
-The notebook is intended to be executed with captured outputs so that the implementation provides evidence of real execution.
+```text
+runs/detect/train/weights/
+```
 
 ---
 
-## 10. How to Run
-
-### 10.1 Prerequisites
-
-The project can be executed using Google Colab or a compatible Python environment.
-
-### 10.2 Install Ultralytics
-
-```python
-!pip install -q ultralytics
-```
-
-### 10.3 Import Required Libraries
-
-```python
-from ultralytics import YOLO, solutions
-
-import cv2
-import os
-import pandas as pd
-```
-
-### 10.4 Run the Notebook
-
-1. Open `Smart_Retail_Analytics_Capstone.ipynb`.
-2. Install the required dependencies.
-3. Load the required YOLO model weights.
-4. Provide the required input video or image.
-5. Execute the notebook cells in order.
-6. Review the generated image and video outputs.
-7. Review the validation metrics.
-
----
-
-## 11. Project Pipeline
+# 12. Project Pipeline
 
 ```text
                     Smart Retail Analytics
@@ -548,7 +531,8 @@ import pandas as pd
       Detection Result                Segmentation Result
               |
               v
-        Video Analytics
+        Real-World Video
+            Analytics
               |
        +------+--------+-------------+
        |      |        |             |
@@ -561,15 +545,26 @@ import pandas as pd
                  Output Videos
                       |
                       v
-                Model Evaluation
+              Model Evaluation
                       |
                       v
-                Performance Metrics
+               Custom Training
+                      |
+                      v
+             Custom Model Inference
+                 |          |
+                 v          v
+               Image      Video
+                            |
+                            v
+                       ONNX Export
 ```
 
 ---
 
-## 12. Project Structure
+# 13. Project Structure
+
+The GitHub repository contains the main notebook and project documentation:
 
 ```text
 Smart-Retail-Analytics/
@@ -580,76 +575,115 @@ Smart-Retail-Analytics/
 +-- .gitattributes
 ```
 
-Generated files, runtime directories, datasets, model weights, and other large generated artifacts should be excluded from version control where appropriate.
+Large generated files, datasets, model weights, and runtime artifacts are excluded from Git version control where appropriate.
+
+Examples include:
+
+```text
+runs/
+datasets/
+custom_dataset/
+*.pt
+*.onnx
+*.mp4
+*.avi
+```
+
+The executed project files and generated artifacts are maintained separately through the project backup workflow.
 
 ---
 
-## 13. Future Work
+# 14. How to Run
 
-### 13.1 Custom Model Training
+## 14.1 Prerequisites
 
-A custom dataset will be selected from a suitable source such as:
+The project can be executed using Google Colab or a compatible Python environment.
 
-- Roboflow Universe
-- Kaggle
-- Open Images
-- Custom collected images
+Recommended environment:
 
-The YOLO model will then be fine-tuned using `model.train()`.
+* Python 3.12+
+* PyTorch
+* Ultralytics
+* OpenCV
+* NumPy
+* Pandas
 
-Training configuration will include parameters such as:
+## 14.2 Install Ultralytics
 
-- Number of epochs
-- Image size
-- Data augmentation
-- Model freezing where appropriate
+```python
+!pip install -q ultralytics
+```
 
-Training results will be analyzed for possible overfitting or underfitting.
+## 14.3 Import Required Libraries
 
-### 13.2 Model Export
+```python
+from ultralytics import YOLO, solutions
 
-After custom training, the trained model will be exported to an optimized deployment format using `model.export()`.
+import cv2
+import os
+import pandas as pd
+```
 
-Possible deployment formats include:
+## 14.4 Run the Notebook
 
-- ONNX
-- OpenVINO
-- TensorRT
-- TFLite
-- TorchScript
-
-### 13.3 Application Deployment
-
-A small application may be developed using:
-
-- Streamlit
-- Gradio
-- FastAPI
-
-The selected deployment target will be documented and justified.
-
----
-
-## 14. Capstone Deliverables Status
-
-| Deliverable | Points | Status |
-|---|---:|---|
-| Core Vision Tasks & Inference | 25 | Completed |
-| Real-World Solution & Video Analytics | 25 | Completed |
-| Model Evaluation | 25 | Completed |
-| Custom Data & Training | 15 | Planned |
-| Deployment & Export | 5 | Planned |
-| Documentation & Evidence of Execution | 5 | In Progress |
-
-The first three deliverables have been implemented with executed YOLO/API calls and captured outputs.
-
-Custom training and deployment/export are planned extensions.
+1. Open `Smart_Retail_Analytics_Capstone.ipynb`.
+2. Install the required dependencies.
+3. Load the required YOLO models.
+4. Provide the required input image or video.
+5. Execute the notebook cells in order.
+6. Review the detection and segmentation outputs.
+7. Review the real-world video analytics outputs.
+8. Run model validation.
+9. Prepare the custom dataset from Roboflow Universe.
+10. Train the custom model.
+11. Run custom model inference.
+12. Export the trained model to ONNX.
 
 ---
 
-## 15. Training Program
+# 15. Evidence of Execution
 
-### Training Information
+The notebook contains captured execution results from the implemented computer vision pipeline.
+
+Evidence includes:
+
+* Successful YOLO model loading.
+* Successful object detection.
+* Detection output images.
+* Instance segmentation output.
+* People-counting video.
+* Heatmap video.
+* Privacy-preserving blurred video.
+* Additional analytics video.
+* Pretrained model validation metrics.
+* Custom dataset training.
+* Custom model prediction images.
+* Custom model video inference.
+* Successful ONNX export.
+* ONNX model verification.
+
+The executed project was also backed up to Google Drive to preserve the trained model, dataset, generated outputs, and project runtime files.
+
+---
+
+# 16. Capstone Deliverables Status
+
+| Deliverable                           | Points | Status    |
+| ------------------------------------- | -----: | --------- |
+| Core Vision Tasks & Inference         |     25 | Completed |
+| Real-World Solution & Video Analytics |     25 | Completed |
+| Model Evaluation                      |     25 | Completed |
+| Custom Data & Training                |     15 | Completed |
+| Deployment & Export                   |      5 | Completed |
+| Documentation & Evidence of Execution |      5 | Completed |
+
+The project implements all six capstone deliverables using executed Ultralytics API calls and captured execution evidence.
+
+---
+
+# 17. Training Program
+
+## Training Information
 
 **Trainee:** Saja Aljamal
 
@@ -663,9 +697,9 @@ Custom training and deployment/export are planned extensions.
 
 **Cohort / Session Dates:** August 9–13, 2026
 
-This project was developed as part of the Computer Vision for Developers with Ultralytics training program delivered by SDAIA Academy via Learning Space.
+This project was developed as part of the **Computer Vision for Developers with Ultralytics** training program delivered by **SDAIA Academy** via Learning Space.
 
-### SDAIA Academy
+## SDAIA Academy
 
 GitHub organization:
 
@@ -673,10 +707,12 @@ https://github.com/SDAIAAcademy
 
 ---
 
-## 16. Author
+# 18. Author
 
 **Saja Aljamal**
 
-Smart Retail Analytics
+**Project:** Smart Retail Analytics
 
-Computer Vision for Developers with Ultralytics Capstone
+**Program:** Computer Vision for Developers with Ultralytics
+
+**Provider:** SDAIA Academy
